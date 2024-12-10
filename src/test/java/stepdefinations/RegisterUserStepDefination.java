@@ -13,6 +13,7 @@ import utilities.ConfigReader;
 import utilities.Driver;
 
 import org.openqa.selenium.JavascriptExecutor;
+import utilities.ReusableMethods;
 
 import java.time.Duration;
 
@@ -28,19 +29,17 @@ public class RegisterUserStepDefination {
 
     @Then("User verifies {string} button is visible")
     public void userVerifiesButtonIsVisible(String buttonName) {
-        Assert.assertTrue(buttonName + "button is not visible!",
-                registerUserPage.signupLoginButton.isDisplayed());
+        ReusableMethods.verifyElementIsVisible(registerUserPage.signupLoginButton);
     }
 
     @When("User clicks on {string} button")
     public void userClicksOnButton(String buttonName) {
-        registerUserPage.signupLoginButton.click();
+        ReusableMethods.clickElement(registerUserPage.signupLoginButton);
     }
 
     @Then("User verifies {string} text is visible")
     public void userVerifiesTextIsVisible(String expectedText) {
-        Assert.assertTrue(expectedText + "text is not visible!",
-                registerUserPage.newUserSignupText.isDisplayed());
+        ReusableMethods.verifyElementIsVisible(registerUserPage.newUserSignupText);
 
 
     }
@@ -55,13 +54,12 @@ public class RegisterUserStepDefination {
 
     @And("User clicks on Signup button")
     public void userClicksOnSignupButton() {
-        registerUserPage.signupButton.click();
+        ReusableMethods.clickElement(registerUserPage.signupButton);
     }
 
     @And("User verifies that {string} text is visible")
     public void userVerifiesThatTextIsVisible(String expectedText) {
-        Assert.assertTrue(expectedText + "text is not visible",
-                registerUserPage.enterAccountInformation.isDisplayed());
+        ReusableMethods.verifyElementIsVisible(registerUserPage.enterAccountInformation);
 
     }
 
@@ -86,27 +84,21 @@ public class RegisterUserStepDefination {
         JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
         js.executeScript("arguments[0].click();", registerUserPage.createAccountButton);
 
-
-
     }
 
     @And("User verifies that ACCOUNT CREATED! text is visible")
     public void userVerifiesThatACCOUNTCREATEDTextIsVisible() {
-        //WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
-        //wait.until(ExpectedConditions.visibilityOf(registerUserPage.enterAccountInformation));
-        Assert.assertTrue(" text is not visible",
-                registerUserPage.accountCreatedText.isDisplayed());
+        ReusableMethods.verifyElementIsVisible(registerUserPage.accountCreatedText);
     }
 
     @And("User clicks on Continue button")
     public void userClicksOnContinueButton() {
-        registerUserPage.continueButton.click();
+        ReusableMethods.clickElement(registerUserPage.continueButton);
     }
 
     @And("User verifies that Logged in as username is visible")
     public void userVerifiesThatLoggedInAsUsernameIsVisible() {
-        Assert.assertTrue( "text is not visible",
-                registerUserPage.loggedInAsText.isDisplayed());
+        ReusableMethods.verifyElementIsVisible(registerUserPage.loggedInAsText);
     }
 
 
