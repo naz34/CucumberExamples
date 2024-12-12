@@ -8,11 +8,13 @@ import org.junit.Assert;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.HomePage;
 import pages.RegisterUserPage;
 import utilities.ConfigReader;
 import utilities.Driver;
 
 import org.openqa.selenium.JavascriptExecutor;
+import utilities.DynamicEmail;
 import utilities.ReusableMethods;
 
 import java.time.Duration;
@@ -20,48 +22,55 @@ import java.time.Duration;
 public class RegisterUserStepDefination {
 
     RegisterUserPage registerUserPage= new RegisterUserPage();
+    HomePage homePage = new HomePage();
 
-    @Given("User navigates to the {string} page")
-    public void userNavigatesToThePage(String urlKey) {
-        String url = ConfigReader.getProperty(urlKey);
-        Driver.getDriver().get(url);
-    }
-
-    @Then("User verifies {string} button is visible")
-    public void userVerifiesButtonIsVisible(String buttonName) {
-        ReusableMethods.verifyElementIsVisible(registerUserPage.signupLoginButton);
-    }
-
-    @When("User clicks on {string} button")
-    public void userClicksOnButton(String buttonName) {
-        ReusableMethods.clickElement(registerUserPage.signupLoginButton);
-    }
 
     @Then("User verifies {string} text is visible")
-    public void userVerifiesTextIsVisible(String expectedText) {
-        ReusableMethods.verifyElementIsVisible(registerUserPage.newUserSignupText);
-
+    public void userVerifiesTextIsVisible(String expectedText){
+        if(expectedText.equals("New User Signup!")){
+            ReusableMethods.verifyElementIsVisible(registerUserPage.newUserSignupText);
+        } else if (expectedText.equals("Email Address already exist!")) {
+            ReusableMethods.verifyElementText(registerUserPage.emailAddressIsText, expectedText.trim());
+        } else if (expectedText.equals("ENTER ACCOUNT INFORMATION")) {
+            ReusableMethods.verifyElementText(registerUserPage.enterAccountInformation, expectedText.trim());
+        } else if (expectedText.equals("ACCOUNT CREATED!")) {
+            ReusableMethods.verifyElementText(registerUserPage.accountCreatedText, expectedText.trim());
+        } else {
+            throw new RuntimeException("Unexpected text: " + expectedText);
+        }
 
     }
+
 
     @When("User enters name {string} and email {string}")
     public void userEntersNameAndEmail(String name, String email) {
         String uemail = "testuser" + System.currentTimeMillis() + "@example.com";
         String uname = "Test User" + System.currentTimeMillis();
+
+        DynamicEmail.email = uemail;
+        DynamicEmail.name = uname;
         registerUserPage.nameField.sendKeys(uname);
         registerUserPage.emailField.sendKeys(uemail);
     }
+
+    @When("User enters email {string} and password {string}")
+    public void userEntersEmailAndPassword(String email, String password) {
+        // Önceden oluşturulan e-posta adresini kullan
+        String previouslyUsedEmail = DynamicEmail.email;
+        String previouslyUsedName =  DynamicEmail.name;
+        registerUserPage.nameField.sendKeys(previouslyUsedName);
+        registerUserPage.emailField.sendKeys(previouslyUsedEmail);
+    }
+
+
+
 
     @And("User clicks on Signup button")
     public void userClicksOnSignupButton() {
         ReusableMethods.clickElement(registerUserPage.signupButton);
     }
 
-    @And("User verifies that {string} text is visible")
-    public void userVerifiesThatTextIsVisible(String expectedText) {
-        ReusableMethods.verifyElementIsVisible(registerUserPage.enterAccountInformation);
 
-    }
 
     @When("User fills out account information")
     public void userFillsOutAccountInformation() {
@@ -86,10 +95,7 @@ public class RegisterUserStepDefination {
 
     }
 
-    @And("User verifies that ACCOUNT CREATED! text is visible")
-    public void userVerifiesThatACCOUNTCREATEDTextIsVisible() {
-        ReusableMethods.verifyElementIsVisible(registerUserPage.accountCreatedText);
-    }
+
 
     @And("User clicks on Continue button")
     public void userClicksOnContinueButton() {

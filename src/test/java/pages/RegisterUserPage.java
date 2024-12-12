@@ -12,8 +12,7 @@ public class RegisterUserPage {
         PageFactory.initElements(Driver.getDriver(),this);
     }
 
-    @FindBy(xpath = "//a[normalize-space()='Signup / Login']")
-    public WebElement signupLoginButton;
+
 
     @FindBy(xpath = "//h2[text()='New User Signup!' ]")
     public WebElement newUserSignupText;
@@ -78,6 +77,8 @@ public class RegisterUserPage {
     @FindBy(xpath = "//a[contains(text(),'Logged in as')]")
     public WebElement loggedInAsText;
 
+    @FindBy(xpath = "//p[normalize-space()='Email Address already exist!']")
+    public WebElement emailAddressIsText;
 
 
 
