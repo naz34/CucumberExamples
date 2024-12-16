@@ -12,9 +12,19 @@ public class LoginUserStepDefination {
     LoginUserPage loginUserPage = new LoginUserPage();
 
     @Then("user verifies {string} text is visible")
-    public void user_verifies_text_is_visible(String string) {
+    public void user_verifies_text_is_visible(String expectedText) {
 
-        ReusableMethods.verifyElementIsVisible(loginUserPage.logintoYourAccount);
+        if(expectedText.equals("Login to your account")){
+            ReusableMethods.verifyElementIsVisible(loginUserPage.logintoYourAccount);
+        }else if(expectedText.equals("Logged in as username")){
+            ReusableMethods.verifyElementIsVisible(loginUserPage.LoggedinasText);
+        }else if (expectedText.equals("Your email or password is incorrect!")){
+            ReusableMethods.verifyElementIsVisible(loginUserPage.yourEmailIncorrect);
+        }else {
+            throw new RuntimeException("Unexpected text: " + expectedText);
+        }
+
+
 
     }
 
@@ -33,11 +43,10 @@ public class LoginUserStepDefination {
 
     }
 
-    @Then("user verifies that {string} text is visible")
-    public void user_verifies_that_text_is_visible(String string) {
-        ReusableMethods.verifyElementIsVisible(loginUserPage.LoggedinasText);
 
-
+    @When("user enters invalid <email> and <password>")
+    public void userEntersInvalidEmailAndPassword() {
+        loginUserPage.loginEmailField.sendKeys("deneme@deneme.com");
+        loginUserPage.loginPasswordField.sendKeys("asdf");
     }
-
 }

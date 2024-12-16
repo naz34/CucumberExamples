@@ -28,9 +28,8 @@ public class LoginUserPage {
     @FindBy(xpath = "//b[normalize-space()='Test+User']")
     public WebElement LoggedinasText;
 
-
-
-
+    @FindBy(xpath = "//p[normalize-space()='Your email or password is incorrect!']")
+    public WebElement yourEmailIncorrect;
 
 
 
